@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+}
+
+header {
+    background-image: url("./images/banner.jpg");
+    color: white;
+    text-shadow: 2px 1px black;
+    text-align: center;
+}
+
+#food-container {
+    display: flex;
+    margin: 150px 50px;
+    border-bottom: 2px thin gray;
+}
+
+#order-btn {
+    display: flex;
+    align-items: flex-end;
+}
