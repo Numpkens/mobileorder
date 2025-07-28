@@ -1,41 +1,26 @@
-export const = menuArr [
+export const menuArr = [
   {
-    item: "",
-    decription: "",
-    cost: "",
-    image: ""
+    title: "Burger Plate",
+    decription: "Handcrafted beef patties with hand cut potatoes",
+    cost: "$20.00",
+    image: "./images/burger.jpg"
   },
   {
-    item: " ",
-    decription: " ",
-    cost: " ",
-    image: " "
+    title: "Calm Pasta",
+    decription: "Fresh caught calms served on top a lightly seasoned linguine",
+    cost: "$25.00 ",
+    image: "./images/calmpasta.jpg "
   },
   {
-    item: " ",
-    decription: " ",
-    cost: " ",
-    image: " "
+    title: "Capress Salad",
+    decription: "A finely chopped salad with capress and garden varity vegetables",
+    cost: "$10.00",
+    image: "./images/capresssalad.jpg"
   },
   {
-    item: " ",
-    decription: " ",
-    cost: " ",
-    image: " "
+    title: "Koftas",
+    decription: "Minced lamb Koftas",
+    cost: "$15.00",
+    image: "./images/koftas.jpg"
   },
-  {
-    item: " ",
-    decription: " ",
-    cost: " ",
-    image: " "
-  },
-  {
-    item: " ",
-    decription: " ",
-    cost: " ",
-    image: " "
-  }
-
 ]
-
-Error: Cannot parse given Error object
