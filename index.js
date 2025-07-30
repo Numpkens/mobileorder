@@ -1,10 +1,11 @@
 import { menuArr } from './menuArray.js';
 
 const menuHtml = [];
+let shoppingCart = [];
 
 // populate menu items
 menuArr.forEach(function(item) {
-  console.log("Creating item:", item.title, "Cost:", item.cost);
+  
 
   menuHtml.push(`
     <div class="food-container">
@@ -23,15 +24,36 @@ document.getElementById('menu-container').innerHTML = menuHtml.join('');
 
 // make the add button interactive
 document.getElementById('menu-container').addEventListener('click', function(e) {
+
+  
+
   if (e.target.classList.contains('order-btn')) {
-    console.log("button clicked!")
     const itemTitle = e.target.dataset.itemTitle;
     const itemCostRaw = e.target.dataset.itemCost;
-
-    console.log("Raw cost from dataset:", itemCostRaw);
-    console.log("After replace and trim:", itemCostRaw.replace('$', "").trim());
-
     const itemCost = parseFloat(itemCostRaw.replace('$', "").trim());
-    console.log(`Clicked on: ${itemTitle}, Price: ${itemCost}`);
+    const existingItem = shoppingCart.find(item => item.title === itemTitle);
+
+    if (existingItem){
+      existingItem.quanity++
+    }
+    else{
+      shoppingCart.push({
+        title: itemTitle,
+        cost: itemCost,
+        quanity: 1,
+      });
+
+    }
+
   }
+  console.log(shoppingCart);
 });
+
+function updatedOrder(){
+  let total = 0;
+  shoppingCart.forEach(item => {
+  total += item.cost * item.quanity;
+  return
+});
+}
+console.log(updatedOrder());
