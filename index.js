@@ -47,13 +47,13 @@ document.getElementById('menu-container').addEventListener('click', function(e) 
 
   }
   console.log(shoppingCart);
-});
+}); 
 
 function updatedOrder(){
   let total = 0;
   shoppingCart.forEach(item => {
   total += item.cost * item.quanity;
-  return
 });
+return
 }
 console.log(updatedOrder());
