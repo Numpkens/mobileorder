@@ -249,3 +249,101 @@ header h4 {
   color: #666;
   font-style: italic;
 }
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-display {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  min-width: 30px;
+  text-align: center;
+}
+
+.decrement-btn {
+  color: black;
+  border-color: #ff6b6b;
+}
+
+.decrement-btn:hover {
+  background-color: #ff5252;
+}
+
+.increment-btn {
+  color: black;
+  border-color: #4caf50;
+}
+
+.increment-btn:hover {
+  background-color: #45a049;
+}
+
+.order-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.order-modal.hidden {
+  display: none;
+}
+
+.order-content {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.order-content h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.order-total-section {
+  border-top: 2px solid #eee;
+  padding-top: 15px;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.close-btn,
+.checkout-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.close-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.checkout-btn {
+  background-color: #4caf50;
+  color: white;
+}

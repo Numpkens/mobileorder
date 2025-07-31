@@ -6,18 +6,28 @@
     <title>Restaurant Menu</title>
     <link rel="stylesheet" href="index.css" />
   </head>
-
   <body>
     <header>
       <h1>Elvina's Diner</h1>
       <h4>The best food in town</h4>
     </header>
-
     <main id="menu-container" class="menu-container"></main>
-
+    <div id="order-modal" class="order-modal hidden">
+      <div class="order-content">
+        <h2>Your Order</h2>
+        <div id="order-items"></div>
+        <div class="order-total-section">
+          <strong>Total: $<span id="modal-total">0.00</span></strong>
+        </div>
+        <div class="modal-buttons">
+          <button id="close-order" class="close-btn">Close</button>
+          <button id="checkout-btn" class="checkout-btn">Checkout</button>
+        </div>
+      </div>
+    </div>
     <div class="bottom-button-container">
       <button id="view-order-btn" class="view-order-button">
-        View Your Order
+        View Your Order - $<span id="order-total">0.00</span>
       </button>
     </div>
     <script src="index.js" type="module"></script>
