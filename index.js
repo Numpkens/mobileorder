@@ -64,11 +64,11 @@ function showOrderModal(){
   const modalTotal = document.getElementById('modal-total')
 
   orderItemsContainer.innerHTML = "";
-  
+
 
   shoppingCart.forEach(item =>{
     const itemElement = document.createElement('div');
-    itemElement.innerHtml =`
+    itemElement.innerHTML =`
       <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee;">
         <span>${item.title}</span>
         <span>${item.quantity} x $${item.cost.toFixed(2)} = $${(item.cost * item.quantity).toFixed(2)}</span>
@@ -85,6 +85,109 @@ function showOrderModal(){
 function hideOrderModal() {
   const modal = document.getElementById('order-modal');
   modal.classList.add('hidden')
+}
+
+// Checkout modal functions
+function showCheckoutModal() {
+  const modal = document.getElementById('checkout-modal');
+  const checkoutTotal = document.getElementById('checkout-total');
+  checkoutTotal.textContent = updatedOrder().toFixed(2);
+  modal.classList.remove('hidden');
+}
+
+function hideCheckoutModal() {
+  const modal = document.getElementById('checkout-modal');
+  modal.classList.add('hidden');
+  clearFormErrors();
+}
+
+function showSuccessModal() {
+  const modal = document.getElementById('success-modal');
+  modal.classList.remove('hidden');
+}
+
+function hideSuccessModal() {
+  const modal = document.getElementById('success-modal');
+  modal.classList.add('hidden');
+  shoppingCart = [];
+  updateAllQuantityDisplays();
+  updatedOrderDisplay();
+  hideOrderModal();
+  hideCheckoutModal();
+}
+
+function formatCardNumber(value) {
+  const numbers = value.replace(/\D/g, '');
+  return numbers.replace(/(\d{4})(?=\d)/g, '$1 ');
+}
+
+function formatExpiryDate(value) {
+  const numbers = value.replace(/\D/g, '');
+  if (numbers.length >= 2) {
+    return numbers.substring(0, 2) + '/' + numbers.substring(2, 4);
+  }
+  return numbers;
+}
+
+function validateCardNumber(cardNumber) {
+  const numbers = cardNumber.replace(/\s/g, '');
+  return /^\d{16}$/.test(numbers);
+}
+
+
+function validateExpiryDate(expiryDate) {
+  if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+    return false;
+  }
+  
+  const [month, year] = expiryDate.split('/').map(num => parseInt(num));
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear() % 100;
+  const currentMonth = currentDate.getMonth() + 1;
+  
+  if (month < 1 || month > 12) {
+    return false;
+  }
+  
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return false;
+  }
+  
+  return true;
+}
+
+function validateCVV(cvv) {
+  return /^\d{3}$/.test(cvv);
+}
+
+function validateName(name) {
+  return name.trim().length >= 2;
+}
+
+function showError(fieldId, message) {
+  const field = document.getElementById(fieldId);
+  const errorElement = document.getElementById(fieldId + '-error');
+  field.classList.add('error');
+  errorElement.textContent = message;
+}
+
+function clearError(fieldId) {
+  const field = document.getElementById(fieldId);
+  const errorElement = document.getElementById(fieldId + '-error');
+  field.classList.remove('error');
+  errorElement.textContent = '';
+}
+
+function clearFormErrors() {
+  const fields = ['card-name', 'card-number', 'expiry-date', 'cvv'];
+  fields.forEach(field => clearError(field));
+}
+
+function updateAllQuantityDisplays() {
+  const quantityDisplays = document.querySelectorAll('.quantity-display');
+  quantityDisplays.forEach(display => {
+    display.textContent = '0';
+  });
 }
 
 
@@ -138,9 +241,95 @@ document.getElementById('close-order').addEventListener('click', function(){
   hideOrderModal();
 })
 
-document.getElementById('order-modeal').addEventListener('click', function(e){
+document.getElementById('order-modal').addEventListener('click', function(e){
   if(e.target === this){
     hideOrderModal();
   }
-})
+});
+
+// Checkout event listeners
+document.getElementById('checkout-btn').addEventListener('click', function() {
+  if (shoppingCart.length > 0) {
+    hideOrderModal();
+    showCheckoutModal();
+  }
+});
+
+document.getElementById('cancel-checkout').addEventListener('click', function() {
+  hideCheckoutModal();
+});
+
+document.getElementById('close-success').addEventListener('click', function() {
+  hideSuccessModal();
+});
+
+document.getElementById('card-number').addEventListener('input', function(e) {
+  const formatted = formatCardNumber(e.target.value);
+  e.target.value = formatted;
+  clearError('card-number');
+});
+
+document.getElementById('expiry-date').addEventListener('input', function(e) {
+  const formatted = formatExpiryDate(e.target.value);
+  e.target.value = formatted;
+  clearError('expiry-date');
+});
+
+document.getElementById('cvv').addEventListener('input', function(e) {
+  e.target.value = e.target.value.replace(/\D/g, '');
+  clearError('cvv');
+});
+
+document.getElementById('card-name').addEventListener('input', function(e) {
+  clearError('card-name');
+});
+
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const cardName = document.getElementById('card-name').value;
+  const cardNumber = document.getElementById('card-number').value;
+  const expiryDate = document.getElementById('expiry-date').value;
+  const cvv = document.getElementById('cvv').value;
+  
+  clearFormErrors();
+  
+  let isValid = true;
+  
+  if (!validateName(cardName)) {
+    showError('card-name', 'Please enter a valid name (at least 2 characters)');
+    isValid = false;
+  }
+  
+  if (!validateCardNumber(cardNumber)) {
+    showError('card-number', 'Please enter a valid 16-digit card number');
+    isValid = false;
+  }
+  
+  if (!validateExpiryDate(expiryDate)) {
+    showError('expiry-date', 'Please enter a valid future date (MM/YY)');
+    isValid = false;
+  }
+  
+  if (!validateCVV(cvv)) {
+    showError('cvv', 'Please enter a valid 3-digit CVV');
+    isValid = false;
+  }
+  
+  if (isValid) {
+    showSuccessModal();
+  }
+});
+
+document.getElementById('checkout-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    hideCheckoutModal();
+  }
+});
+
+document.getElementById('success-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    hideSuccessModal();
+  }
+});
     
